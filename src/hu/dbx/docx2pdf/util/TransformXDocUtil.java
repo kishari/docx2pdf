@@ -3,13 +3,11 @@ package hu.dbx.docx2pdf.util;
 
 import hu.dbx.docx2pdf.model.SampleXDocModel;
 import hu.dbx.docx2pdf.model.TransformResponseType;
-import hu.dbx.ecrion.xfws.client.*;
 
 public class TransformXDocUtil {
 
     private String templateDir;
     private String testOutputDir;
-    private XfwsSoap xfService;
 
     public TransformXDocUtil(){}
 
@@ -53,21 +51,8 @@ public class TransformXDocUtil {
             // Write to output stream
             OutputStream os = new FileOutputStream(getTestOutputDir() + "/out_" + templateName +  "_viaXslfo.pdf"  );
             c.output(os, new PdfSettings());
-*/
 
-            /*
-            XmlDataSource dataSource = new XmlDataSource();
-
-            dataSource.setContent(content);
-            dataSource.setFormat(InputFormat.DOC_X);
-
-            RenderingParameters parameters = new RenderingParameters();
-            parameters.setOutputFormat(OutputFormat.PDF);
-            parameters.setInputBytesID("Id");
-
-            getXfService().render(dataSource, parameters);
-            */
-/*        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (XDocReportException e) {
             e.printStackTrace();
@@ -97,13 +82,5 @@ public class TransformXDocUtil {
 
     public void setTestOutputDir(String testOutputDir) {
         this.testOutputDir = testOutputDir;
-    }
-
-    public XfwsSoap getXfService() {
-        return xfService;
-    }
-
-    public void setXfService(XfwsSoap xfService) {
-        this.xfService = xfService;
     }
 }

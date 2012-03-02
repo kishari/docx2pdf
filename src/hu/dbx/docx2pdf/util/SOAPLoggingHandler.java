@@ -50,7 +50,7 @@ public class SOAPLoggingHandler implements SOAPHandler<SOAPMessageContext> {
         if (outboundProperty.booleanValue()) {
         	logger.debug("Outgoing message:");
         } else {
-        	logger.info("Incoming message:");
+        	logger.debug("Incoming message:");
         }
         
         SOAPMessage message = smc.getMessage();
@@ -61,7 +61,7 @@ public class SOAPLoggingHandler implements SOAPHandler<SOAPMessageContext> {
             	logger.debug(format(baos.toString()));
             }
             else {
-            	logger.info(format(baos.toString()));
+            	logger.debug(format(baos.toString()));
             }
         	
         } catch (Exception e) {

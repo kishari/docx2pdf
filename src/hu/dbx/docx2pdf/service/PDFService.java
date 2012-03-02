@@ -41,7 +41,7 @@ public class PDFService implements ApplicationContextAware {
 	public byte[] render(@WebParam(name="inputXML") String inputXML,
 					   @WebParam(name="templateId") String templateId,
 					   @WebParam(name="version") String version) {
-		
+
 		logger.info("render started.");
         String templateName = templateId + "-v" + version.toString() + ".docx";
 
