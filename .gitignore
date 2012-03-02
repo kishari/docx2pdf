@@ -3,3 +3,5 @@
 docx2pdf.properties
 .DS_Store
 .idea
+out
+lib_tmp

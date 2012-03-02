@@ -1,40 +1,22 @@
 package hu.dbx.docx2pdf.util;
 
-import fr.opensagres.xdocreport.converter.ConverterTypeTo;
-import fr.opensagres.xdocreport.converter.ConverterTypeVia;
-import fr.opensagres.xdocreport.converter.Options;
-import fr.opensagres.xdocreport.core.XDocReportException;
-import fr.opensagres.xdocreport.core.document.DocumentKind;
-import fr.opensagres.xdocreport.document.IXDocReport;
-import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
-import fr.opensagres.xdocreport.template.IContext;
-import fr.opensagres.xdocreport.template.TemplateEngineKind;
-import fr.opensagres.xdocreport.template.formatter.FieldsMetadata;
-import hu.dbx.docx2pdf.model.Developer;
+
 import hu.dbx.docx2pdf.model.SampleXDocModel;
 import hu.dbx.docx2pdf.model.TransformResponseType;
+import hu.dbx.ecrion.xfws.client.*;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Created by IntelliJ IDEA.
- * User: kishari
- * Date: 2012.02.28.
- * Time: 11:43
- */
 public class TransformXDocUtil {
 
     private String templateDir;
     private String testOutputDir;
+    private XfwsSoap xfService;
 
     public TransformXDocUtil(){}
 
     public TransformResponseType transfrom(String templateName, SampleXDocModel model) {
+/*
         try {
-            // 1) Load Docx file by filling Velocity template engine and cache
-			// it to the registry
+
             InputStream input = new FileInputStream(new File(getTemplateDir(), templateName));
             IXDocReport report = XDocReportRegistry.getRegistry().loadReport(input, TemplateEngineKind.Velocity);
 
@@ -47,22 +29,45 @@ public class TransformXDocUtil {
             developers.add( new Developer( "ZERR", "Angelo", "angelo.zerr@gmail.com" ) );
             developers.add( new Developer( "Leclercq", "Pascal", "pascal.leclercq@gmail.com" ) );
 
-            // 2) Create context Java model
 			IContext context = report.createContext();
 			context.put("model", model);
             context.put( "developers", developers );
 			//context.put("model.Name2", model.getName());
 			//context.put("model.testContent", model.getName());
 
-			// 3) Generate report by merging Java model with the Docx
             Options options = Options.getFrom(DocumentKind.DOCX).to(ConverterTypeTo.PDF).via(ConverterTypeVia.ITEXT);
             //Options options = Options.getTo(ConverterTypeTo.PDF).via(ConverterTypeVia.ITEXT);
-			OutputStream outPdf = new FileOutputStream(new File(templateDir, "out_" + templateName + ".pdf"));
-			OutputStream outDocx = new FileOutputStream(new File(templateDir, "out_" + templateName));
+			OutputStream outPdf = new FileOutputStream(new File(getTestOutputDir(), "out_" + templateName + "_viaItext.pdf"));
+			OutputStream outDocx = new FileOutputStream(new File(getTestOutputDir(), "out_" + templateName));
 			report.process(context, outDocx);
 			report.convert(context, options, outPdf);
 
-        } catch (FileNotFoundException e) {
+            // Fonts identity mapping best on Microsoft Windows
+            WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage();
+            wordMLPackage.setFontMapper(  new  IdentityPlusMapper());
+
+            // Set up converter
+
+            PdfConversion c = new org.docx4j.convert.out.pdf.viaXSLFO.Conversion(wordMLPackage);
+
+            // Write to output stream
+            OutputStream os = new FileOutputStream(getTestOutputDir() + "/out_" + templateName +  "_viaXslfo.pdf"  );
+            c.output(os, new PdfSettings());
+*/
+
+            /*
+            XmlDataSource dataSource = new XmlDataSource();
+
+            dataSource.setContent(content);
+            dataSource.setFormat(InputFormat.DOC_X);
+
+            RenderingParameters parameters = new RenderingParameters();
+            parameters.setOutputFormat(OutputFormat.PDF);
+            parameters.setInputBytesID("Id");
+
+            getXfService().render(dataSource, parameters);
+            */
+/*        } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (XDocReportException e) {
             e.printStackTrace();
@@ -71,8 +76,10 @@ public class TransformXDocUtil {
         }
         catch (NullPointerException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
+*/
         return new TransformResponseType();
     }
 
@@ -90,5 +97,13 @@ public class TransformXDocUtil {
 
     public void setTestOutputDir(String testOutputDir) {
         this.testOutputDir = testOutputDir;
+    }
+
+    public XfwsSoap getXfService() {
+        return xfService;
+    }
+
+    public void setXfService(XfwsSoap xfService) {
+        this.xfService = xfService;
     }
 }

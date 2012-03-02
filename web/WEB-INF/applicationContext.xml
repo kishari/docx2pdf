@@ -13,6 +13,43 @@
 	<bean id="transformUtil" class="hu.dbx.docx2pdf.util.TransformXDocUtil">
 		<property name="templateDir" value="#{config.templateDirPath}/"/>
         <property name="testOutputDir" value="#{config.testOutputDirDirPath}/"/>
+        <!--<property name="xfService" ref="xfwsPort"/>-->
 	</bean>
+<!--
+    <bean id="xfwsService" class="hu.dbx.ecrion.xfws.client.Xfws">
+		<property name="handlerResolver" ref="pdfHandlerResolver"/>
+	</bean>
+
+    <bean id="xfwsPort" parent="endpointSetterProxy">
+        <property name="proxyInterfaces" value="hu.dbx.ecrion.xfws.client.XfwsSoap"/>
+        <property name="target" ref="xfwsServicePortTarget"/>
+    </bean>
+
+    <bean id="xfwsServicePortTarget" factory-bean="xfwsService" factory-method="getXfwsSoap"/>
+
+    <bean id="endpointSetterProxy" class="org.springframework.aop.framework.ProxyFactoryBean" abstract="true">
+        <property name="interceptorNames">
+            <list>
+                <value>endpointSetter</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="endpointSetter" class="hu.dbx.docx2pdf.util.EndpointSetterAdvice">
+        <property name="endpointMap">
+            <util:map key-type="java.lang.Object" value-type="java.net.URL">
+                <entry key-ref="xfwsServicePortTarget" value="http://192.168.1.118:8080/ecrion/services/xfws"/>
+            </util:map>
+        </property>
+    </bean>
+
+    <bean id="pdfHandlerResolver" class="hu.dbx.docx2pdf.util.PdfHandlerResolver">
+		<property name="handlerList">
+			<util:list>
+				<bean class="hu.dbx.docx2pdf.util.SOAPLoggingHandler"/>
+			</util:list>
+		</property>
+	</bean>
+-->
 	
 </beans>

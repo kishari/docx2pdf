@@ -40,10 +40,10 @@ public class PDFService implements ApplicationContextAware {
 	@WebMethod
 	public byte[] render(@WebParam(name="inputXML") String inputXML,
 					   @WebParam(name="templateId") String templateId,
-					   @WebParam(name="version") Integer version) {
+					   @WebParam(name="version") String version) {
 		
 		logger.info("render started.");
-        String templateName = templateId + "-v" + version.toString();
+        String templateName = templateId + "-v" + version.toString() + ".docx";
 
         SampleXDocModel model = new SampleXDocModel("Józsi", "Ödön");
 
@@ -55,10 +55,11 @@ public class PDFService implements ApplicationContextAware {
 				
 			outDir.mkdirs();
 				
+
 			File pdfFile = new File(outDir, "result_" + templateName + ".pdf");
 			OutputStream fos;
 			fos = new BufferedOutputStream(new FileOutputStream(pdfFile));
-			fos.write(result.getPdf());
+//			fos.write(result.getPdf());
 			fos.close();
 
 		    logger.info("render finished.");

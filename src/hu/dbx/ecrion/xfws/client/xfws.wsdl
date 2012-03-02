@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.ecrion.com/xfws/2.0" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.ecrion.com/xfws/2.0" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Render XSL-FO documents using &lt;b&gt;XF Ultrascale&lt;/b&gt;. For more information see the &lt;b&gt;Programmers Documentation&lt;/b&gt; section in XF Ultrascale Help.</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.ecrion.com/xfws/2.0">
+      <s:element name="Render">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="1" name="Input" nillable="true" type="tns:IDataSource"/>
+            <s:element maxOccurs="1" minOccurs="1" name="Parameters" nillable="true" type="tns:RenderingParameters"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType abstract="true" name="IDataSource"/>
+      <s:complexType name="XmlDataSource">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:IDataSource">
+            <s:sequence>
+              <s:element maxOccurs="1" minOccurs="1" name="Content" nillable="true"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Format" type="tns:InputFormat"/>
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="InputFormat">
+        <s:restriction base="s:string">
+          <s:enumeration value="Unknown"/>
+          <s:enumeration value="XSLFO"/>
+          <s:enumeration value="SVG"/>
+          <s:enumeration value="XML"/>
+          <s:enumeration value="WordML"/>
+          <s:enumeration value="DocX"/>
+          <s:enumeration value="PDF"/>
+          <s:enumeration value="HTML"/>
+          <s:enumeration value="EPS"/>
+          <s:enumeration value="DAL"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="DASDataSource">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:IDataSource">
+            <s:sequence>
+              <s:element maxOccurs="1" minOccurs="1" name="Diagram" nillable="true" type="tns:Diagram"/>
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType abstract="true" name="Diagram">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="0" name="Properties" type="tns:ArrayOfJobProperty"/>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="InputBytesID" type="s:string"/>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="OutputBytesID" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfJobProperty">
+        <s:sequence>
+          <s:element maxOccurs="unbounded" minOccurs="0" name="JobProperty" nillable="true" type="tns:JobProperty"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="JobProperty">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="0" name="ObjectID" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="PropertyName" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="PropertyValue" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ServerDiagram">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Diagram">
+            <s:sequence>
+              <s:element maxOccurs="1" minOccurs="1" name="ID" nillable="true" type="s:string"/>
+              <s:element default="" maxOccurs="1" minOccurs="0" name="UserName" type="s:string"/>
+              <s:element default="" maxOccurs="1" minOccurs="0" name="Password" type="s:string"/>
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="LocalDiagram">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Diagram">
+            <s:sequence>
+              <s:element maxOccurs="1" minOccurs="1" name="Content" nillable="true"/>
+              <s:element maxOccurs="1" minOccurs="0" name="BaseUrl" type="s:string"/>
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="RenderingParameters">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="1" name="OutputFormat" type="tns:OutputFormat"/>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="BaseUrl" type="s:string"/>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="InputBytesID" type="s:string"/>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="OutputBytesID" type="s:string"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="PreloadDocument" type="s:boolean"/>
+          <s:element maxOccurs="1" minOccurs="0" name="Template" type="tns:DocumentTemplate"/>
+          <s:element maxOccurs="1" minOccurs="0" name="MiscellaneousSettings" type="tns:MiscellaneousSettings"/>
+          <s:element maxOccurs="1" minOccurs="0" name="HtmlInputSettings" type="tns:HtmlInputSettings"/>
+          <s:element maxOccurs="1" minOccurs="0" name="RasterOutputSettings" type="tns:RasterOutputSettings"/>
+          <s:element maxOccurs="1" minOccurs="0" name="AFPOutputSettings" type="tns:AFPOutputSettings"/>
+          <s:element maxOccurs="1" minOccurs="0" name="PDFOutputSettings" type="tns:PDFOutputSettings"/>
+          <s:element maxOccurs="1" minOccurs="0" name="PrintOutputSettings" type="tns:PrintOutputSettings"/>
+          <s:element maxOccurs="1" minOccurs="0" name="HtmlOutputSettings" type="tns:HtmlOutputSettings"/>
+          <s:element maxOccurs="1" minOccurs="0" name="TxtOutputSettings" type="tns:TxtOutputSettings"/>
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="OutputFormat">
+        <s:restriction base="s:string">
+          <s:enumeration value="Unknown"/>
+          <s:enumeration value="PDF"/>
+          <s:enumeration value="AFP"/>
+          <s:enumeration value="POSTSCRIPT"/>
+          <s:enumeration value="WordML"/>
+          <s:enumeration value="Silverlight"/>
+          <s:enumeration value="XPS"/>
+          <s:enumeration value="TIFF"/>
+          <s:enumeration value="PRN"/>
+          <s:enumeration value="HTML"/>
+          <s:enumeration value="JPEG"/>
+          <s:enumeration value="GIF"/>
+          <s:enumeration value="PNG"/>
+          <s:enumeration value="SVG"/>
+          <s:enumeration value="PPTX"/>
+          <s:enumeration value="EPUB"/>
+          <s:enumeration value="IOCA"/>
+          <s:enumeration value="TXT"/>
+          <s:enumeration value="DOCX"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType abstract="true" name="DocumentTemplate">
+        <s:sequence>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="XSLTParameters" type="s:string"/>
+          <s:element default="MSXML" maxOccurs="1" minOccurs="0" name="XSLTEngine" type="tns:XsltEngine"/>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="LanguageID" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="XsltEngine">
+        <s:restriction base="s:string">
+          <s:enumeration value="MSXML"/>
+          <s:enumeration value="DotNet20"/>
+          <s:enumeration value="Saxon"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ServerDocumentTemplate">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DocumentTemplate">
+            <s:sequence>
+              <s:element maxOccurs="1" minOccurs="1" name="ID" nillable="true" type="s:string"/>
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="LocalDocumentTemplate">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DocumentTemplate">
+            <s:sequence>
+              <s:element maxOccurs="1" minOccurs="1" name="Content" nillable="true"/>
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="MiscellaneousSettings">
+        <s:sequence>
+          <s:element default="Parallel" maxOccurs="1" minOccurs="0" name="ReferenceResolverType" type="tns:ReferenceResolverType"/>
+          <s:element default="100" maxOccurs="1" minOccurs="0" name="AutoLayoutRowCount" type="s:int"/>
+          <s:element default="IgnoreAndDisplayImageNotFound" maxOccurs="1" minOccurs="0" name="ImageErrorsHandlingMode" type="tns:ImageErrorsHandlingMode"/>
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ReferenceResolverType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Parallel"/>
+          <s:enumeration value="Serial"/>
+          <s:enumeration value="Disabled"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ImageErrorsHandlingMode">
+        <s:restriction base="s:string">
+          <s:enumeration value="ThrowError"/>
+          <s:enumeration value="Ignore"/>
+          <s:enumeration value="IgnoreAndDisplayImageNotFound"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="HtmlInputSettings">
+        <s:sequence>
+          <s:element default="auto" maxOccurs="1" minOccurs="0" name="PageWidth" type="s:string"/>
+          <s:element default="auto" maxOccurs="1" minOccurs="0" name="PageHeight" type="s:string"/>
+          <s:element default="1in" maxOccurs="1" minOccurs="0" name="PageMarginTop" type="s:string"/>
+          <s:element default="1in" maxOccurs="1" minOccurs="0" name="PageMarginLeft" type="s:string"/>
+          <s:element default="1in" maxOccurs="1" minOccurs="0" name="PageMarginRight" type="s:string"/>
+          <s:element default="1in" maxOccurs="1" minOccurs="0" name="PageMarginBottom" type="s:string"/>
+          <s:element default="0.5in" maxOccurs="1" minOccurs="0" name="PageHeaderMargin" type="s:string"/>
+          <s:element default="0.5in" maxOccurs="1" minOccurs="0" name="PageFooterMargin" type="s:string"/>
+          <s:element default="true" maxOccurs="1" minOccurs="0" name="ShowPageNumber" type="s:boolean"/>
+          <s:element default="true" maxOccurs="1" minOccurs="0" name="ShowTitle" type="s:boolean"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RasterOutputSettings">
+        <s:sequence>
+          <s:element default="None" maxOccurs="1" minOccurs="0" name="CompressionAlgorithm" type="tns:CompressionAlgorithm"/>
+          <s:element default="100" maxOccurs="1" minOccurs="0" name="ZoomFactor" type="s:float"/>
+          <s:element default="0" maxOccurs="1" minOccurs="0" name="XResolution" type="s:int"/>
+          <s:element default="0" maxOccurs="1" minOccurs="0" name="YResolution" type="s:int"/>
+          <s:element default="Default" maxOccurs="1" minOccurs="0" name="SmoothingMode" type="tns:SmoothingMode"/>
+          <s:element default="-1" maxOccurs="1" minOccurs="0" name="PageIdx" type="s:int"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="ImageTransparentBackground" type="s:boolean"/>
+          <s:element default="-1" maxOccurs="1" minOccurs="0" name="ImageScaleWidth" type="s:int"/>
+          <s:element default="-1" maxOccurs="1" minOccurs="0" name="ImageScaleHeight" type="s:int"/>
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="CompressionAlgorithm">
+        <s:restriction base="s:string">
+          <s:enumeration value="None"/>
+          <s:enumeration value="CCITT3"/>
+          <s:enumeration value="CCITT4"/>
+          <s:enumeration value="LZW"/>
+          <s:enumeration value="RLE"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="SmoothingMode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Default"/>
+          <s:enumeration value="None"/>
+          <s:enumeration value="AntiAlias"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="AFPOutputSettings">
+        <s:sequence>
+          <s:element default="NativeRasterFonts" maxOccurs="1" minOccurs="0" name="Fonts" type="tns:AFPFonts"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="EmbedFonts" type="s:boolean"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="WriteSentinels" type="s:boolean"/>
+          <s:element default="Disabled" maxOccurs="1" minOccurs="0" name="Grayscale" type="tns:GrayscaleMethod"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="AutoRotateLandscapePages" type="s:boolean"/>
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="AFPFonts">
+        <s:restriction base="s:string">
+          <s:enumeration value="NativeRasterFonts"/>
+          <s:enumeration value="NativeOutlineFonts"/>
+          <s:enumeration value="TTF"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="GrayscaleMethod">
+        <s:restriction base="s:string">
+          <s:enumeration value="Disabled"/>
+          <s:enumeration value="RGB"/>
+          <s:enumeration value="Pattern"/>
+          <s:enumeration value="Highlight"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="PDFOutputSettings">
+        <s:sequence>
+          <s:element default="PDF14" maxOccurs="1" minOccurs="0" name="PDFConformance" type="tns:PDFConformance"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="AllowPrinting" type="s:boolean"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="AllowModifyContents" type="s:boolean"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="AllowCopy" type="s:boolean"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="AllowModifyAnnotations" type="s:boolean"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="AllowFillIn" type="s:boolean"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="AllowScreenReaders" type="s:boolean"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="AllowAssembly" type="s:boolean"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="AllowDegradedPrinting" type="s:boolean"/>
+          <s:element default="40" maxOccurs="1" minOccurs="0" name="EncryptionStrength" type="s:int"/>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="UserPassword" type="s:string"/>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="OwnerPassword" type="s:string"/>
+          <s:element default="JPEG" maxOccurs="1" minOccurs="0" name="ImageCompression" type="tns:PDFImageCompression"/>
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="PDFConformance">
+        <s:restriction base="s:string">
+          <s:enumeration value="PDF14"/>
+          <s:enumeration value="PDFX"/>
+          <s:enumeration value="PDFA1A"/>
+          <s:enumeration value="PDFA1B"/>
+          <s:enumeration value="PDF508"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="PDFImageCompression">
+        <s:restriction base="s:string">
+          <s:enumeration value="FLAT"/>
+          <s:enumeration value="JPEG"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="PrintOutputSettings">
+        <s:sequence>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="PrinterName" type="s:string"/>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="OutputPrintFile" type="s:string"/>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="InputTray" type="s:string"/>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="OutputTray" type="s:string"/>
+          <s:element default="-1" maxOccurs="1" minOccurs="0" name="CopyCount" type="s:int"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="Duplex" type="s:boolean"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="HtmlOutputSettings">
+        <s:sequence>
+          <s:element default="true" maxOccurs="1" minOccurs="0" name="GenerateHtmlDocument" type="s:boolean"/>
+          <s:element default="true" maxOccurs="1" minOccurs="0" name="UseFixedBodyWidth" type="s:boolean"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="HideStaticContent" type="s:boolean"/>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="RenderedImagesBaseUrl" type="s:string"/>
+          <s:element default="" maxOccurs="1" minOccurs="0" name="RenderedImagesOutputFolder" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TxtOutputSettings">
+        <s:sequence>
+          <s:element default="ASCII" maxOccurs="1" minOccurs="0" name="Encoding" type="tns:OutputEncoding"/>
+          <s:element default="Courier New" maxOccurs="1" minOccurs="0" name="FontFamily" type="s:string"/>
+          <s:element default="9" maxOccurs="1" minOccurs="0" name="FontSize" type="s:float"/>
+          <s:element default="1.4" maxOccurs="1" minOccurs="0" name="LineHeight" type="s:float"/>
+          <s:element default="true" maxOccurs="1" minOccurs="0" name="UseFormFeed" type="s:boolean"/>
+          <s:element default="false" maxOccurs="1" minOccurs="0" name="TrimPages" type="s:boolean"/>
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="OutputEncoding">
+        <s:restriction base="s:string">
+          <s:enumeration value="ASCII"/>
+          <s:enumeration value="UTF16"/>
+          <s:enumeration value="UTF8"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="RenderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="RenderResult" type="s:base64Binary"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="RenderSoapOut">
+    <wsdl:part name="parameters" element="tns:RenderResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="RenderSoapIn">
+    <wsdl:part name="parameters" element="tns:Render">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="xfwsSoap">
+    <wsdl:operation name="Render">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Render the given input using the specified parameters. The function receives a XmlDataSource or a DASDataSource and returns a byte array with the resulting &lt;b&gt;PDF&lt;/b&gt;, &lt;b&gt;AFP&lt;/b&gt;, &lt;b&gt;POSTSCRIPT&lt;/b&gt;, etc.&lt;br/&gt; The XmlDataSource must contain the bytes of a document in one of the supported input formats (XSL-FO, SVG, etc.). The DASDataSource must specify a DAS diagram and a DocumentTemplate. As additional parameters you must specify at least &lt;b&gt;OutputFormat&lt;/b&gt;. If your documents contain external images referred through relative paths, you must also specify &lt;b&gt;BaseUrl&lt;/b&gt;.</wsdl:documentation>
+      <wsdl:input message="tns:RenderSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:RenderSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="xfwsSoap" type="tns:xfwsSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Render">
+      <soap:operation soapAction="http://www.ecrion.com/xfws/2.0/Render" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="xfwsSoap12" type="tns:xfwsSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Render">
+      <soap12:operation soapAction="http://www.ecrion.com/xfws/2.0/Render" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="xfws">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Render XSL-FO documents using &lt;b&gt;XF Ultrascale&lt;/b&gt;. For more information see the &lt;b&gt;Programmers Documentation&lt;/b&gt; section in XF Ultrascale Help.</wsdl:documentation>
+    <wsdl:port name="xfwsSoap" binding="tns:xfwsSoap">
+      <soap:address location="http://192.168.1.118:8080/ecrion/services/xfws.xfwsSoap/"/>
+    </wsdl:port>
+    <wsdl:port name="xfwsSoap12" binding="tns:xfwsSoap12">
+      <soap12:address location="http://192.168.1.118:8080/ecrion/services/xfws.xfwsSoap12/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
