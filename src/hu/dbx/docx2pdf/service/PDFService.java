@@ -43,14 +43,15 @@ public class PDFService implements ApplicationContextAware {
 					   @WebParam(name="version") String version) {
 
 		logger.info("render started.");
-        String templateName = templateId + "-v" + version.toString() + ".docx";
+        //String templateName = templateId + "-v" + version.toString() + ".odt";
+        String templateName = templateId + ".odt";
 
         SampleXDocModel model = new SampleXDocModel("Józsi", "Ödön");
 
 		try {
 			final TransformResponseType result = getTransformUtil().transfrom(templateName, model);
 
-        	File baseDir = new File(getTransformUtil().getTestOutputDir());
+        	File baseDir = new File(getTransformUtil().getTemplateDir());
 		    File outDir = new File(baseDir, "out");
 				
 			outDir.mkdirs();
@@ -61,6 +62,8 @@ public class PDFService implements ApplicationContextAware {
 			fos = new BufferedOutputStream(new FileOutputStream(pdfFile));
 //			fos.write(result.getPdf());
 			fos.close();
+
+            pdfFile.delete();
 
 		    logger.info("render finished.");
 

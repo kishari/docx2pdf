@@ -12,7 +12,7 @@
  
 	<bean id="transformUtil" class="hu.dbx.docx2pdf.util.TransformXDocUtil">
 		<property name="templateDir" value="#{config.templateDirPath}/"/>
-        <property name="testOutputDir" value="#{config.testOutputDirDirPath}/"/>
+        <property name="testOutputDir" value="#{config.testOutputDirPath}/"/>
 	</bean>
 	
 </beans>
